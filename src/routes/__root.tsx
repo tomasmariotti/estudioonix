@@ -5,6 +5,7 @@ import {
   createRootRouteWithContext,
   useRouter,
   HeadContent,
+  Scripts,
 } from "@tanstack/react-router";
 
 import { SiteNav } from "@/components/site/SiteNav";
@@ -95,9 +96,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
   }),
   component: RootComponent,
+  shellComponent: RootShell,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
+
+function RootShell({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="es">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();

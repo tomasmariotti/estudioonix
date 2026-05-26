@@ -1,29 +1,14 @@
-import { RouterProvider, createRouter } from "@tanstack/react-router";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { StartClient } from "@tanstack/react-start";
 import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { routeTree } from "./routeTree.gen";
+import { hydrateRoot } from "react-dom/client";
+import { getRouter } from "./router";
 import "./styles.css";
 
-const queryClient = new QueryClient();
+const router = getRouter();
 
-const router = createRouter({
-  routeTree,
-  context: { queryClient },
-  scrollRestoration: true,
-  defaultPreloadStaleTime: 0,
-});
-
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
-}
-
-createRoot(document.getElementById("root")!).render(
+hydrateRoot(
+  document,
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <StartClient router={router} />
   </StrictMode>,
 );
